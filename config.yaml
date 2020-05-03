@@ -5,9 +5,9 @@ configuration:
         # type can be OPEN_URL or FORCED_URL or FORCED_URL_NO_PASSWORD - later two need proxiedUrl uncommented
         type: "FORCED_URL_NO_PASSWORD"
         listenHost: "localhost"
-        port: "1111"
+        port: "8008"
         requestsPerConnection: "10000"
-        proxiedUrl: "ws://localhost:8081/borderconnect/api/sockets/borderconnect"
+        proxiedUrl: "wss://open.senrigan.io/ws/async/writeup/text_generation/session/1333334/"
     transportConfiguration:
         sendPrefix: "" # these allow a prefix and suffix on all arbitrary requests to proxied server
         sendSuffix: ""

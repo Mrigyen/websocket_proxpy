@@ -136,6 +136,7 @@ class WebSocketProxpy:
         asyncio.get_event_loop().run_until_complete(server)
         asyncio.get_event_loop().run_forever()
 
+    @asyncio.coroutine
     def process_arbitrary_requests(self, proxy_web_socket, proxied_web_socket, connection):
         while True:
             request_for_proxy = yield from proxy_web_socket.recv()
@@ -212,10 +213,11 @@ class WebSocketProxpy:
 
         if proxied_url_value is None:
             url_missing_message = "Couldn't establish proxy. Url not provided in [" + proxied_url_json + "]"
-            yield from proxy_web_socket.send(get_json_status_response("error", url_missing_message + "'}"))
+            # yield from proxy_web_socket.send(get_json_status_response("error", url_missing_message + "'}"))
 
         return proxied_url_value
 
+    @asyncio.coroutine
     def connect_to_proxy_server(self, proxied_url_value, proxy_web_socket):
         try:
             proxied_web_socket = yield from websockets.connect(proxied_url_value)
@@ -224,11 +226,12 @@ class WebSocketProxpy:
             return
         self.logger.log("Established proxied connection with PROXIED SERVER [" + proxied_url_value + "]")
 
-        connection_open_message = "Proxied connection [" + proxied_url_value + "] open for arbitrary requests.'"
-        yield from proxy_web_socket.send(get_json_status_response("ok", connection_open_message))
+        connection_open_message = "Proxied connection [" + proxied_url_value + "] open for arbitrary requests."
+        # yield from proxy_web_socket.send(get_json_status_response("ok", connection_open_message))
 
         return proxied_web_socket
 
+    @asyncio.coroutine
     def send_to_web_socket_connection_aware(self, proxy_web_socket, proxied_web_socket, request_for_proxy):
         try:
             yield from proxied_web_socket.send(request_for_proxy)
